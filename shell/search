@@ -1,0 +1,73 @@
+##########################################################################
+# Title      :	search - search files in directory list
+# Author     :	Heiner Steven <heiner.steven@odn.de>
+# Date       :	1994-03-10
+# Category   :	File Utilities
+# Requires   :
+# SCCS-Id.   :	@(#) search	1.2 02/12/19
+##########################################################################
+# Changes
+# 17.05.94 stv	handle wildcards in file names (0.2)
+# 30.05.95 stv	print each path found in seperate line (0.3)
+# 27.02.96 stv	minor changes (0.4)
+##########################################################################
+
+PN=`basename "$0"`			# Program name
+VER='1.2'
+
+Usage () {
+    echo "$PN - search files in directory list, $VER (stv '94)
+Usage: $PN [-v variable_name] [-a] [file ...]
+    -v: environment variable containing search path (default is PATH)
+    -a: print all matches (default: print only first match)
+
+The environment variable may contain directory names,
+separated with ':'." >&2
+    exit 1
+}
+
+set -- `getopt 'hav:' "$@"`
+Var='PATH'				# Variable name
+All=n					# Show all matches (y/n)?
+while [ $# -gt 0 ]
+do
+    case "$1" in
+	-v)	Var="$2"; shift;;
+	-a)	All=y;;
+	--)	break;;
+	-*|-h)	Usage ;;
+    esac
+    shift
+done
+shift					# terminating '--' from getopt
+
+[ $# -gt 0 ] || Usage
+
+Dirs=`eval echo '$'$Var`		# Contents of environment variable
+
+# Replace all separators ':' with blanks.
+# Special handling:
+#   ':' at the beginning or at the end of the list means "current directory"
+Dirs=`echo "$Dirs" | sed 's/::/:.:/g;s/^:/.:/;s/:$/:./;s/:/ /g'`
+
+# Search all files in all given directories
+result=1				# Result (nothing found)
+CurDir=`pwd`
+for File
+do
+    for Dir in $Dirs
+    do 
+	[ "$Dir" = "." ] && Dir="$CurDir"
+	set -- $Dir/$File		# May be more than one file
+	for Path
+        do
+	    if [ -f "$1" ]
+	    then
+	        result=0		# At least one file found
+	        echo "$Path"
+	        [ $All = n ] && break 3	# Search all files?
+	    fi
+	done
+    done
+done
+exit $result
