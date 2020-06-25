@@ -1,5 +1,7 @@
 # some setup to have consistent environment
 brew update
+#install essential softwares
+brew install vim
 
 # install and setup git
 brew install git
