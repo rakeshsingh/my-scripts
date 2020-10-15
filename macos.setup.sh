@@ -2,6 +2,7 @@
 brew update
 #install essential softwares
 brew install vim
+brew install python3 
 
 # install and setup git
 brew install git
@@ -14,3 +15,7 @@ brew install spark
 # install battery
 brew tap Goles/battery
 brew install battery
+
+#install python organize
+pip3 install -U organize-tool
+organize config --path ~/personal/my-scripts/config/organize-tool.yaml

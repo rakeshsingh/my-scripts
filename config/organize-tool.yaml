@@ -1,0 +1,35 @@
+rules:
+  # move screenshots into "Screenshots" folder
+  - folders: ~/Desktop
+    filters:
+      - filename:
+          startswith: 'Screen Shot'
+    actions:
+      - move: ~/Desktop/Screenshots/
+
+rules:
+  - folders: '~/WorkDocs'
+    filters:
+      - extension:
+        - .txt
+        - text
+        - json
+        - md
+    actions:
+      - echo: 'Found notes file: {path}'
+      - move: ~/WorkDocs/notes/
+
+  # move incomplete downloads older > 30 days into the trash
+  - folders: ~/Downloads
+    filters:
+      - extension:
+        - download
+        - crdownload
+        - part
+      - lastmodified:
+    days: 30
+          mode: older
+    actions:
+      - trash
+
+
