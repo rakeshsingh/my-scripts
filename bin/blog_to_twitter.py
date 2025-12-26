@@ -4,13 +4,15 @@ import os
 import time
 
 from my_scripts.secrets_manager import my_secrets
+from my_scripts.logger import setup_logger
 
 # --- CONFIGURATION ---
 # Replace with your WordPress RSS URL (usually https://yourblog.com/feed/)
 RSS_URL = "https://rakeshkumar.wordpress.com/feed/"
 
 # File to store the ID of the last tweeted post
-ID_FILE = "last_seen_id.txt"
+ID_FILE = "/tmp/last_seen_id.txt"
+log = setup_logger(name="DailyBackup", log_file="/tmp/backup.log")
 
 
 def get_twitter_client():
@@ -40,11 +42,11 @@ def save_last_seen_id(post_id):
 
 def main():
     # 1. Parse the RSS Feed
-    print("Checking for new posts...")
+    log.info("Checking for new posts...")
     feed = feedparser.parse(RSS_URL)
 
     if not feed.entries:
-        print("No entries found in RSS feed.")
+        log.info("No entries found in RSS feed.")
         return
 
     last_seen_id = get_last_seen_id()
@@ -77,7 +79,7 @@ def main():
         try:
             # Post to Twitter
             response = client.create_tweet(text=tweet_text)
-            print(f"Tweeted: {title}")
+            log.info(f"Tweeted: {title}")
 
             # Update the last seen ID immediately after a success
             save_last_seen_id(post.id)
@@ -86,11 +88,11 @@ def main():
             time.sleep(2)
 
         except Exception as e:
-            print(f"Error tweeting post '{title}': {e}")
+            log.info(f"Error tweeting post '{title}': {e}")
             break
 
     if not new_posts:
-        print("No new posts to tweet.")
+        log.info("No new posts to tweet.")
 
 
 if __name__ == "__main__":
