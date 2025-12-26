@@ -1,6 +1,6 @@
 import requests
-import json
 from datetime import datetime
+
 
 class RouterMonitor:
     def __init__(self, router_ip="192.168.1.1", username="admin", password="admin"):
@@ -16,10 +16,7 @@ class RouterMonitor:
         """
         try:
             login_url = f"http://{self.router_ip}/login"
-            login_data = {
-                'username': self.username,
-                'password': self.password
-            }
+            login_data = {"username": self.username, "password": self.password}
             response = self.session.post(login_url, data=login_data)
             return response.status_code == 200
         except Exception as e:
@@ -37,7 +34,7 @@ class RouterMonitor:
 
             if response.status_code == 200:
                 clients_data = response.json()
-                return clients_data.get('clients', [])
+                return clients_data.get("clients", [])
             return []
         except Exception as e:
             print(f"Error getting clients: {e}")
@@ -52,16 +49,24 @@ class RouterMonitor:
         other_devices = 0
 
         for client in clients:
-            device_name = client.get('name', '').lower()
-            mac_vendor = client.get('vendor', '').lower()
+            device_name = client.get("name", "").lower()
+            mac_vendor = client.get("vendor", "").lower()
 
             # Identify mobile devices
-            if any(keyword in device_name for keyword in ['iphone', 'android', 'samsung', 'pixel']):
+            if any(
+                keyword in device_name
+                for keyword in ["iphone", "android", "samsung", "pixel"]
+            ):
                 mobile_devices += 1
-            elif any(keyword in mac_vendor for keyword in ['apple', 'samsung', 'google']):
+            elif any(
+                keyword in mac_vendor for keyword in ["apple", "samsung", "google"]
+            ):
                 mobile_devices += 1
             # Identify computers
-            elif any(keyword in device_name for keyword in ['macbook', 'laptop', 'desktop', 'pc']):
+            elif any(
+                keyword in device_name
+                for keyword in ["macbook", "laptop", "desktop", "pc"]
+            ):
                 computers += 1
             else:
                 other_devices += 1
@@ -71,18 +76,19 @@ class RouterMonitor:
         estimated_people = mobile_devices + (computers // 2)
 
         return {
-            'estimated_people': max(1, estimated_people),
-            'mobile_devices': mobile_devices,
-            'computers': computers,
-            'other_devices': other_devices
+            "estimated_people": max(1, estimated_people),
+            "mobile_devices": mobile_devices,
+            "computers": computers,
+            "other_devices": other_devices,
         }
+
 
 def main_router_method():
     # You'll need to configure these for your router
     monitor = RouterMonitor(
         router_ip="192.168.1.1",  # Your router's IP
-        username="admin",         # Your router's username
-        password="password"       # Your router's password
+        username="admin",  # Your router's username
+        password="password",  # Your router's password
     )
 
     if monitor.login_to_router():
@@ -97,5 +103,7 @@ def main_router_method():
     else:
         print("Failed to connect to router")
 
+
 if __name__ == "__main__":
     main_router_method()
+

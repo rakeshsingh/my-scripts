@@ -4,3 +4,7 @@ __pycache__/
 .vscode/
 poetry.lock
 dist/
+.venv/
+*.env
+*.egg-info/
+
