@@ -41,7 +41,7 @@ def setup_logger(name="app", log_file=None, level=logging.INFO):
 
     # Define the output format
     # Example: 2023-10-27 10:00:00 | INFO | Your message here
-    log_fmt = "%(asctime)s | %(levelname)-8s | %(message)s"
+    log_fmt = "%(asctime)s | %(name)s |%(levelname)-8s | %(message)s"
     date_fmt = "%Y-%m-%d %H:%M:%S"
 
     # --- 1. Console Handler (Stdout) ---

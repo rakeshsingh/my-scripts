@@ -12,3 +12,4 @@ my_secrets["x_access_token_secret"] = os.getenv("X_ACCESS_TOKEN_SECRET")
 
 # print("X_CONSUMER_KEY: ", x_consumer_key)
 # print("X_CONSUMER_SECRET: ", x_consumer_secret)
+my_secrets["logfile"] = os.getenv("LOGFILE")
