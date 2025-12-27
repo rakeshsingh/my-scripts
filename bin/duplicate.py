@@ -10,6 +10,9 @@ import os
 import sys
 import hashlib
 from collections import defaultdict
+from my_scripts.logger import setup_logger
+
+logger = setup_logger()
 
 
 def chunk_reader(fobj, chunk_size=1024):
@@ -80,7 +83,7 @@ def check_for_duplicates(paths):
 
             if full_hash in files_by_full_hash:
                 duplicate = files_by_full_hash[full_hash]
-                print("Duplicate found:\n - %s\n - %s\n" % (filename, duplicate))
+                logger.info("Duplicate found:\n - %s\n - %s\n" % (filename, duplicate))
             else:
                 files_by_full_hash[full_hash] = filename
 
@@ -89,4 +92,4 @@ if __name__ == "__main__":
     if sys.argv[1:]:
         check_for_duplicates(sys.argv[1:])
     else:
-        print("Usage: %s <folder> [<folder>...]" % sys.argv[0])
+        logger.info("Usage: %s <folder> [<folder>...]" % sys.argv[0])

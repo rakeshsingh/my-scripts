@@ -1,18 +1,22 @@
 #!/usr/bin/python
 import os
 import sys
+from my_scripts.logger import setup_logger
+
+logger = setup_logger()
+
 path = os.getcwd()
 steps=0
 
 if len(sys.argv) < 2:
-    print("Don't know how many steps to go up")
+    logger.info("Don't know how many steps to go up")
 else:
     steps = int(sys.argv[1])
     for step in range(steps):
         path=path +"/.."
 try:
-    print("Going to: "+ path) 
+    logger.info("Going to: "+ path) 
     os.chdir(path)
-    print(os.getcwd())
+    logger.info(os.getcwd())
 except OSError:
-    print("Some error occurred")
+    logger.info("Some error occurred")

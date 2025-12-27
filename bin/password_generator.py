@@ -33,4 +33,4 @@ if __name__ == "__main__":
         parser.print_help()
     else:
         logger.info(f"Genearting a password of length: {args.length}")
-        print(generate_password(length=args.length))
+        logger.info(generate_password(length=args.length))

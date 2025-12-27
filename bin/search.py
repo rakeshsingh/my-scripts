@@ -3,6 +3,10 @@ import re
 from itertools import chain
 from functools import reduce
 
+from my_scripts.logger import setup_logger
+
+logger = setup_logger()
+
 WORD_MIN_LENGTH = 2
 inverted = {}
 
@@ -62,7 +66,7 @@ def index(text, line, filepath):
     return inverted
 
 def index_file(filepath):
-    print('visited index_file')
+    logger.info('visited index_file')
     with open(filepath) as file:
         for line_number, line in enumerate(file,1):
             #print(line_number, line)
@@ -72,7 +76,7 @@ def search(query):
     """
     Returns a set of documents id that contains all the words in your query.
     """
-    print('visited in search')
+    logger.info('visited in search')
     #words = [word for _, word in index(query) if word in inverted]
     results = inverted[query]
     return results
@@ -130,4 +134,4 @@ produce no carbon emissions.
 if __name__ == '__main__':
     index_file('/Users/raksingh/personal/my-scripts/scripts/search.py')
     for match in search('index'):
-        print(match)
+        logger.info(match)

@@ -1,6 +1,10 @@
 import os
 from PIL import Image
 from PIL.ExifTags import TAGS
+from my_scripts.logger import setup_logger
+
+logger = setup_logger()
+
 
 def extract_metadata(image_path):
     """
@@ -20,7 +24,7 @@ def extract_metadata(image_path):
                 metadata[tag_name] = value
 
     except Exception as e:
-        print(f"Error extracting metadata from {image_path}: {e}")
+        logger.info(f"Error extracting metadata from {image_path}: {e}")
 
     return metadata
 
@@ -35,10 +39,10 @@ def traverse_directory(directory):
             if file.lower().endswith(('jpg', 'jpeg', 'png', 'tiff', 'bmp', 'gif')):
                 image_path = os.path.join(root, file)
                 metadata = extract_metadata(image_path)
-                print(f"Metadata for {image_path}:")
+                logger.info(f"Metadata for {image_path}:")
                 for key, value in metadata.items():
-                    print(f"  {key}: {value}")
-                print("\n")
+                    logger.info(f"  {key}: {value}")
+                logger.info("\n")
 
 if __name__ == "__main__":
     directory_path = input("Enter the directory path: ")

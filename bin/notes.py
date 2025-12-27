@@ -3,6 +3,9 @@ import os
 import re
 from datetime import datetime
 from collections import OrderedDict
+from my_scripts.logger import setup_logger
+
+logger = setup_logger()
 
 class NotesManager:
     """
@@ -30,7 +33,7 @@ class NotesManager:
                     #print(entry.name, entry.stat().st_ctime)
         sorted_notes = sorted(notes.items(), key=lambda x: x[1], reverse=True)
         for i in range(0, min(len(sorted_notes),10)):
-            print(sorted_notes[i][0])
+            logger.info(sorted_notes[i][0])
 
     def create(self, category, detail):
         if category is None:

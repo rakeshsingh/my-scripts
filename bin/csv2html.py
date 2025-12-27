@@ -11,6 +11,9 @@ from __future__ import print_function
 import csv
 import argparse
 import os
+from my_scripts.logger import setup_logger
+
+logger = setup_logger()
 
 DEFAULT_DELIMITER = ";"
 
@@ -251,12 +254,12 @@ HTML tables"
             import HTMLgen
         except ImportError:
             if args.forcehtmlgen:
-                print(
+                logger.info(
                     "Forced to use HTMLgen but couldn't import it.\n\n\
 Please install HTMLgen."
                 )
             else:
-                print(
+                logger.info(
                     "Couldn't import HTMLgen or html.\n\n\
 Please install either to use csv2html."
                 )
@@ -277,10 +280,10 @@ Please install either to use csv2html."
                     usinghtmlgen,
                 )
     except IOError as e:
-        print("I/O error({0}): {1}".format(e.errno, e.strerror))
+        logger.info("I/O error({0}): {1}".format(e.errno, e.strerror))
         exit(os.EX_IOERR)
     except Exception as e:
-        print("Unexpected error:", e)
+        logger.info("Unexpected error:", e)
         exit(os.EX_SOFTWARE)
 
 

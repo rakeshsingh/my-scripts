@@ -7,4 +7,4 @@ logger = setup_logger()
 logger.info(f"workfing on: {file_name}")
 reader = PdfReader(file_name)
 for page in reader.pages:
-    print(page.extract_text())
+    logger.info(page.extract_text())

@@ -3,13 +3,16 @@ import exifread
 import re
 import sys
 from datetime import datetime
+from my_scripts.logger import setup_logger
+
+logger = setup_logger()
 
 
 def read_metadata(filename):
     """
     Read image file and get the exif attributes
     """
-    print('Came here with: ' , filename)
+    logger.info('Came here with: ' , filename)
     # Open image file for reading (binary mode)
     f = open(filename, 'rb')
     # Return Exif tags
@@ -54,6 +57,6 @@ if __name__ == '__main__':
     """ Execution Starts here """
     for line in sys.stdin:
         filename=line.rstrip()
-        print(filename)
+        logger.info(filename)
         metadata = read_metadata(filename)
-        print('creation_date: ', get_creation_date(metadata))
+        logger.info('creation_date: ', get_creation_date(metadata))
